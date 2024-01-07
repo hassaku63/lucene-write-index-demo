@@ -2,12 +2,14 @@ package net.hassaku63.hellolucene;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.Files;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.IndexWriter;
@@ -55,9 +57,17 @@ public class TextIndexWriter implements Runnable {
             System.exit(1);
         }
 
-        // set title
+        BasicFileAttributes attr = null;
+        try {
+            attr = Files.readAttributes(inputPath, BasicFileAttributes.class);
+        } catch (Exception e) {
+            System.out.println("Failed to read input file.");
+            System.exit(1);
+        }
+
+        String fileName = inputPath.getFileName().toString();
         if (title == null) {
-            title = inputPath.getFileName().toString();
+            title = fileName;
         }
 
         // create lucene index
@@ -74,11 +84,21 @@ public class TextIndexWriter implements Runnable {
         iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
 
         // create document
-        TextField titleField = new TextField("title", title, Field.Store.NO);
+        TextField titleField = new TextField("title", title, Field.Store.YES);
+        TextField hideenTitleField = new TextField("title_no_store", title, Field.Store.NO);
+        TextField fileNameField = new TextField("file_name", fileName, Field.Store.YES);
         TextField contentField = new TextField("content", inputText, Field.Store.YES);
+        TextField lastModifiedField = new TextField("last_modified_time", attr.lastModifiedTime().toString(), Field.Store.YES);
+        LongField lastModifiedMillisField = new LongField("last_modified_time_millis", attr.lastModifiedTime().toMillis(), Field.Store.YES);
+        LongField sizeField = new LongField("size", attr.size(), Field.Store.YES);
         Document doc = new Document();
         doc.add(titleField);
+        doc.add(hideenTitleField);
+        doc.add(fileNameField);
         doc.add(contentField);
+        doc.add(lastModifiedField);
+        doc.add(lastModifiedMillisField);
+        doc.add(sizeField);
 
         // write to lucene index
         IndexWriter writer = null;
@@ -86,6 +106,7 @@ public class TextIndexWriter implements Runnable {
             writer = new IndexWriter(dir, iwc);
             writer.addDocument(doc);
             writer.commit();
+            writer.close();
         } catch (Exception e) {
             System.out.println("Failed to write lucene index.");
             System.exit(1);
