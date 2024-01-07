@@ -20,26 +20,34 @@ $ make install # mvn clean install
 ## Usage
 
 ```bash
-$ make run ARGS="-h"
+$ make run-rebuild ARGS="-h"
 # ...
-Usage: hellolucene [-hV] [-i=<inputFilePath>] [-o=<outputFilePath>] [-t=<title>]
+Usage: main [-hV] [COMMAND]
 Hello Lucene Sample Application
-  -h, --help            Show this help message and exit.
-  -i, --input=<inputFilePath>
-                        Input file path
-  -o, --output=<outputFilePath>
-                        Output file path
-  -t, --title=<title>   Title of input file. Default is input file name
-  -V, --version         Print version information and exit.
+  -h, --help      Show this help message and exit.
+  -V, --version   Print version information and exit.
+Commands:
+  write  Lucene Sample write application
 
-$ make run ARGS="-i Makefile -o output/makefile"
-# ...
 
-$ $ ls -l output/makefile/
-total 16
--rw-rw-r-- 1 ubuntu ubuntu  352 Jan  6 15:15 _0.cfe
--rw-rw-r-- 1 ubuntu ubuntu 2094 Jan  6 15:15 _0.cfs
--rw-rw-r-- 1 ubuntu ubuntu  336 Jan  6 15:15 _0.si
--rw-rw-r-- 1 ubuntu ubuntu  154 Jan  6 15:15 segments_1
--rw-rw-r-- 1 ubuntu ubuntu    0 Jan  6 15:15 write.lock
+# $ make run ARGS="-i Makefile -o output/makefile"
+$ make run-write-sample 
+java -jar target/hello-lucene-1.0-SNAPSHOT-jar-with-dependencies.jar write -i Makefile -o output/Makefile
+
+
+$ ls -la output/Makefile/
+total 48
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jan  7 09:24 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan  7 09:11 ..
+-rw-rw-r-- 1 ubuntu ubuntu  352 Jan  7 09:11 _0.cfe
+-rw-rw-r-- 1 ubuntu ubuntu 2681 Jan  7 09:11 _0.cfs
+-rw-rw-r-- 1 ubuntu ubuntu  336 Jan  7 09:11 _0.si
+-rw-rw-r-- 1 ubuntu ubuntu  352 Jan  7 09:22 _1.cfe
+-rw-rw-r-- 1 ubuntu ubuntu 2681 Jan  7 09:22 _1.cfs
+-rw-rw-r-- 1 ubuntu ubuntu  336 Jan  7 09:22 _1.si
+-rw-rw-r-- 1 ubuntu ubuntu  352 Jan  7 09:24 _2.cfe
+-rw-rw-r-- 1 ubuntu ubuntu 2681 Jan  7 09:24 _2.cfs
+-rw-rw-r-- 1 ubuntu ubuntu  336 Jan  7 09:24 _2.si
+-rw-rw-r-- 1 ubuntu ubuntu  318 Jan  7 09:24 segments_3
+-rw-rw-r-- 1 ubuntu ubuntu    0 Jan  7 09:11 write.lock
 ```

@@ -2,11 +2,9 @@ package net.hassaku63.hellolucene;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -17,29 +15,27 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.FSDirectory;
 
 @Command(
-    name = "hellolucene",
-    description = "Hello Lucene Sample Application",
-    mixinStandardHelpOptions = true,
-    version = "0.1.0"
+    name = "write",
+    description = "Lucene Sample write application"
 )
-public class Cli implements Runnable {
+public class TextIndexWriter implements Runnable {
     @Option(
         names = {"-i", "--input"},
         description = "Input file path"
     )
-    private String inputFilePath;
+    String inputFilePath;
 
     @Option(
         names = {"-t", "--title"},
         description = "Title of input file. Default is input file name"
     )
-    private String title;
+    String title;
 
     @Option(
         names = {"-o", "--output"},
         description = "Output file path"
     )
-    private String outputFilePath;
+    String outputFilePath;
 
     @Override
     public void run() {

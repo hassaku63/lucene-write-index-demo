@@ -20,13 +20,21 @@ package:
 build:
 	@mvn compile && mvn package
 
-.PHONY: run
-run: build
+.PHONY: run-rebuild
+run-rebuild: build
 	@java -jar target/hello-lucene-1.0-SNAPSHOT-jar-with-dependencies.jar $(ARGS)
 
-.PHONY: run-without-build
-run-without-build:
+.PHONY: run
+run:
 	@java -jar target/hello-lucene-1.0-SNAPSHOT-jar-with-dependencies.jar $(ARGS)
+
+.PHONY: run-write
+run-write:
+	java -jar target/hello-lucene-1.0-SNAPSHOT-jar-with-dependencies.jar write $(ARGS)
+
+.PHONY: run-write-sample
+run-write-sample:
+	java -jar target/hello-lucene-1.0-SNAPSHOT-jar-with-dependencies.jar write -i Makefile -o output/Makefile
 
 # execute post-build if you have GraalVM installed and will generate native binary
 .PHONY: native-image
