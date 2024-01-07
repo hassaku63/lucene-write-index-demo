@@ -10,8 +10,8 @@ import picocli.CommandLine.Command;
     mixinStandardHelpOptions = true,
     version = "0.1.0",
     subcommands = {
-        TextIndexWriter.class
-        // DescribeIndexMetadata.class,
+        TextIndexWriter.class,
+        DescribeIndexMetadata.class,
     }
 )
 public class Main {
