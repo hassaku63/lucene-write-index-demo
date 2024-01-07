@@ -27,3 +27,8 @@ run: build
 .PHONY: run-without-build
 run-without-build:
 	@java -jar target/hello-lucene-1.0-SNAPSHOT-jar-with-dependencies.jar $(ARGS)
+
+# execute post-build if you have GraalVM installed and will generate native binary
+.PHONY: native-image
+native-image:
+	@native-image -jar target/hello-lucene-1.0-SNAPSHOT-jar-with-dependencies.jar

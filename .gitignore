@@ -42,3 +42,6 @@ bin
 # Output directory
 output/
 !output/.gitkeep
+
+# graalvm native-image
+hello-lucene*
